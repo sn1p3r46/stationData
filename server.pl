@@ -71,17 +71,17 @@ while(1)
 
   	foreach (@fileArr){
   		for my $dev (@macs){
-  			s/[\0\r\h]//g;
+        s/[\0\r\h]//g;
         my @arr = split(",",$_);
         if (/^($dev)/){
           my %hash =
             (
-                "mac"  => $arr[0],
-                "power" => $arr[8]+0,
-                "essid"  => $arr[13],
+              "mac"  => $arr[0],
+              "power" => $arr[8]+0,
+              "essid"  => $arr[13],
             );
-          push @response , \%hash;
-      }
+            push @response , \%hash;
+        }
 	  }
   # write response data to the connected client
 	$data = $json->pretty->encode(\@response);
