@@ -72,7 +72,7 @@ while(1)
   	foreach (@fileArr){
   		for my $dev (@macs){
   			s/[\0\r\h]//g;
-  			my @arr = split(",",$_);
+        my @arr = split(",",$_);
         if (/^($dev)/){
           my %hash =
             (
