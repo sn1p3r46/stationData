@@ -17,6 +17,7 @@ use warnings;
 use JSON;
 use IO::Socket::INET;
 
+my inputFile='tmpfile0-01.csv';
 my $port="7777";
 my $address="0.0.0.0";
 my @drone_macs = qw/90:03:B7 A0:14:3D 00:12:1C 00:26:7E/;
@@ -31,10 +32,10 @@ while (@ARGV) {
     ($_ =~ /^-./) && do { print STDERR "Unknown option: $_\n"; die "Wrong Parameters"};
 }
 
-# auto-flush on socket
+# auto-flush on socket;
 $| = 1;
 
-# creating a listening socket
+# creating a listening socket;
 my $socket = new IO::Socket::INET (
     LocalHost => $address,
     LocalPort => $port,
@@ -49,10 +50,10 @@ $json = JSON->new->allow_nonref;
 print "server waiting for client connection on port $port\n";
 while(1)
 {
-    # waiting for a new client connection
+    # waiting for a new client connection;
     my $client_socket = $socket->accept();
 
-    # get information about a newly connected client
+    # get information about a newly connected client;
     my $client_address = $client_socket->peerhost();
     my $client_port = $client_socket->peerport();
     print "connection from $client_address:$client_port\n";
@@ -60,15 +61,16 @@ while(1)
     my $data = "";
     my @response;
 
-    # Read up to 1024 characters from the connected client
-
+    # Read up to 1024 characters from the connected client;
     $client_socket->recv($data, 1024);
     print "received data: $data\n";
-
-    open(FILE,"<tmpfile0-01.csv") || print "Can't read tmp file tmpfile0-01.csv: $!";
+    
+    # read from the file
+    open(FILE,"<",inputFile) || print "Can't read tmp file tmpfile0-01.csv: $!";
   	my @fileArr = <FILE>;
   	close (FILE);
-
+    
+    # Filter MACS and creates  a pretty response with necessary information;
   	foreach (@fileArr){
   		for my $dev (@macs){
         s/[\0\r\h]//g;
@@ -77,17 +79,17 @@ while(1)
           my %hash =
             (
               "mac"  => $arr[0],
-              "power" => $arr[8]+0,
+              "power" => $arr[8]+0, # cast to scalar;
               "essid"  => $arr[13],
             );
             push @response , \%hash;
         }
-	  }
-  # write response data to the connected client
+	    }
+  }  
+  # send response JSON data to the connected client;
 	$data = $json->pretty->encode(\@response);
 	$client_socket->send($data);
-
-  # notify client that response has been sent
+  # notify client that response has been sent;
   shutdown($client_socket, 1);
 }
 
