@@ -17,7 +17,7 @@ use warnings;
 use JSON;
 use IO::Socket::INET;
 
-my inputFile='tmpfile0-01.csv';
+my $inputFile='tmpfile0-01.csv';
 my $port="7777";
 my $address="0.0.0.0";
 my @drone_macs = qw/90:03:B7 A0:14:3D 00:12:1C 00:26:7E/;
@@ -66,7 +66,7 @@ while(1)
     print "received data: $data\n";
     
     # read from the file
-    open(FILE,"<",inputFile) || print "Can't read tmp file tmpfile0-01.csv: $!";
+    open(FILE,"<",$inputFile) || print "Can't read tmp file $inputFile: $!";
   	my @fileArr = <FILE>;
   	close (FILE);
     
@@ -91,5 +91,7 @@ while(1)
 	$client_socket->send($data);
   # notify client that response has been sent;
   shutdown($client_socket, 1);
-  $socket->close();
+
 }
+
+$socket->close();
