@@ -72,7 +72,7 @@ while(1)
     
     # Filter MACS and creates  a pretty response with necessary information;
   	foreach (@fileArr){
-  		for my $dev (@macs){
+  	  for my $dev (@macs){
         s/[\0\r\h]//g;
         my @arr = split(",",$_);
         if (/^($dev)/){
@@ -85,12 +85,11 @@ while(1)
             push @response , \%hash;
         }
 	    }
-  }  
+   }  
   # send response JSON data to the connected client;
 	$data = $json->pretty->encode(\@response);
 	$client_socket->send($data);
   # notify client that response has been sent;
   shutdown($client_socket, 1);
+  $socket->close();
 }
-
-$socket->close();
