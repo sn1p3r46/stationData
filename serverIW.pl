@@ -16,6 +16,7 @@
 use warnings;
 use JSON;
 use IO::Socket::INET;
+use Data::Dumper;
 
 my $inputFile='tmpfile0-01.csv';
 my $port="7777";
@@ -59,12 +60,14 @@ while(1)
     print "connection from $client_address:$client_port\n";
 
     my $data = "";
-    my @response;
+    my @response = ();
 
     # Read up to 1024 characters from the connected client;
     $client_socket->recv($data, 1024);
     print "received data: $data\n";
-    
+
+    if ($data eq "airodump"){
+    print "RECEIVED REQUEST FOR AIRODUMP";
     # read from the file
     open(FILE,"<",$inputFile) || print "Can't read tmp file $inputFile: $!";
   	my @fileArr = <FILE>;
@@ -83,9 +86,30 @@ while(1)
               "essid"  => $arr[13],
             );
             push @response , \%hash;
-        }
-	    }
-   }  
+        		}
+		}
+	}
+    } else {
+	print "RECEIVED REQUEST FOR IWLIST";
+	my $rawIW = `iwlist wlan0 scan`;
+	foreach (split(/Cell/,$rawIW)){
+        	if ($_=~/\b(74:EA:3A:.*|C4:EA:1D:.*)\b/){
+	
+        	        my $MAC = $1;
+               		my ($power) = $_=~/Signal level=(-\d\d\b)/g;
+               		my %hash =
+                  	(
+                        	"mac"  => $MAC,
+                        	"essid" => ($_=~/\bESSID:"(.*)\b/g),
+                        	"power"  => $power*1,
+                  	);
+                	#print Dumper\%hash;
+                	push @response , \%hash;
+
+        	}
+	}
+    }
+
   # send response JSON data to the connected client;
 	$data = $json->pretty->encode(\@response);
 	$client_socket->send($data);
