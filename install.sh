@@ -2,7 +2,7 @@
 
 
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 
 sudo apt-get install -y libssl-dev ethtool libnl-genl-3-dev git
 
