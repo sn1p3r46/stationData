@@ -19,7 +19,7 @@
 	die "This script has to be runned as root. $! \n";
  }
 
- my $iFace='wlan0';
+ my $iFace='wlan1';
  my $p1 = $PID;
 
  $SIG{INT} = sub { kkillit(); die "Caught a sigint $!" };
