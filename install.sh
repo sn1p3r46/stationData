@@ -1,7 +1,8 @@
 #!/bin/bash
 
 
-sudo cpan JSON
+sudo apt-get update
+sudo apt-get upgrade
 
 sudo apt-get install -y libssl-dev ethtool libnl-genl-3-dev git
 
@@ -15,3 +16,5 @@ mkdir server
 cd server
 git clone https://github.com/sn1p3r46/stationData.git
 cd ..
+
+sudo cpan JSON
