@@ -72,7 +72,7 @@ while(1)
     open(FILE,"<",$inputFile) || print "Can't read tmp file $inputFile: $!";
   	my @fileArr = <FILE>;
   	close (FILE);
-    
+
     # Filter MACS and creates  a pretty response with necessary information;
   	foreach (@fileArr){
   	  for my $dev (@macs){
@@ -93,8 +93,8 @@ while(1)
 	print "RECEIVED REQUEST FOR IWLIST";
 	my $rawIW = `iwlist wlan0 scan`;
 	foreach (split(/Cell/,$rawIW)){
-        	if ($_=~/\b(74:EA:3A:.*|C4:EA:1D:.*)\b/){
-	
+        	if ($_=~/\b(90:03:B7:.*|A0:14:3D:.*|00:12:1C:.*|00:26:7E:.*)\b/){
+
         	        my $MAC = $1;
                		my ($power) = $_=~/Signal level=(-\d\d\b)/g;
                		my %hash =
