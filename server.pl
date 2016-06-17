@@ -80,9 +80,9 @@ while(1)
         if (/^($dev)/){
           if ($arr[2]=~/(\d\d\d\d-\d\d-\d\d)(\d\d):(\d\d):(\d\d)/){
             my $actualTime = $hour*3600+$min*60+$sec;
-            print $actualTime;
+            print $actualTime,"\n";
             my $lastSeen = $2*3600+$3*60+$4;
-            print $lastSeen;
+            print $lastSeen,"\n";
             if ($lastSeen+15 > $actualTime){
               my %hash =
                 (
