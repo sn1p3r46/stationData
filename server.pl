@@ -78,11 +78,11 @@ while(1)
         s/[\0\r\h]//g;
         my @arr = split(",",$_);
         if (/^($dev)/){
-          if ($arr[1]=~/(\d\d\d\d-\d\d-\d\d)(\d\d):(\d\d):(\d\d)/){
+          if ($arr[2]=~/(\d\d\d\d-\d\d-\d\d)(\d\d):(\d\d):(\d\d)/){
             my $actualTime = $hour*3600+$min*60+$sec;
-            print actualTime;
+            print $actualTime;
             my $lastSeen = $2*3600+$3*60+$4;
-            print lastSeen;
+            print $lastSeen;
             if ($lastSeen+15 > $actualTime){
               my %hash =
                 (
