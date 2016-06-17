@@ -83,7 +83,7 @@ while(1)
             print $actualTime,"\n";
             my $lastSeen = $2*3600+$3*60+$4;
             print $lastSeen,"\n";
-            if ($lastSeen+15 > $actualTime){
+            if ($lastSeen+5 > $actualTime){
               my %hash =
                 (
                   "mac"  => $arr[0],
