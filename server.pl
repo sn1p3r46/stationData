@@ -71,19 +71,27 @@ while(1)
   	close (FILE);
 
     # Filter MACS and creates  a pretty response with necessary information;
+    ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+
   	foreach (@fileArr){
   	  for my $dev (@drone_macs){
         s/[\0\r\h]//g;
         my @arr = split(",",$_);
         if (/^($dev)/){
-          my %hash =
-            (
-              "mac"  => $arr[0],
-              "power" => $arr[8]+0, # cast to scalar;
-              "essid"  => $arr[13],
-            );
-          if ($hash{'power'}!=0) {
-            push @response , \%hash;
+          if ($arr[1]=~/(\d\d\d\d-\d\d-\d\d)(\d\d):(\d\d):(\d\d)/){
+            my $actualTime = $hour*3600+$min*60+$sec;
+            my $lastSeen = $2*3600+$3*60+$4;
+            if ($lastSeen+5 > $actualTime){
+              my %hash =
+                (
+                  "mac"  => $arr[0],
+                  "power" => $arr[8]+0, # cast to scalar;
+                  "essid"  => $arr[13],
+                );
+              if ($hash{'power'}!=0) {
+                push @response , \%hash;
+              }
+            }
           }
         }
 	    }
