@@ -22,7 +22,7 @@ my $port="7777";
 my $address="0.0.0.0";
 my @drone_macs = qw/90:03:B7 A0:14:3D 00:12:1C 00:26:7E/;
 my @macs=qw/A4:56:30 AC:A0:16:BB/;
-@macs=qw/84:B2:61 00:24:89:C5 FA:DE:27:95 A4:56:30 AC:A0:16:BB/;
+@macs=qw/84:B2:61 00:24:89:C5 FA:DE:27:95/;
 #my $dev = "A4:56:30";
 
 while (@ARGV) {
@@ -64,15 +64,15 @@ while(1)
     # Read up to 1024 characters from the connected client;
     $client_socket->recv($data, 1024);
     print "received data: $data\n";
-    
+
     # read from the file
     open(FILE,"<",$inputFile) || print "Can't read tmp file $inputFile: $!";
   	my @fileArr = <FILE>;
   	close (FILE);
-    
+
     # Filter MACS and creates  a pretty response with necessary information;
   	foreach (@fileArr){
-  	  for my $dev (@drone_macs){
+  	  for my $dev (@macs){
         s/[\0\r\h]//g;
         my @arr = split(",",$_);
         if (/^($dev)/){
@@ -82,10 +82,12 @@ while(1)
               "power" => $arr[8]+0, # cast to scalar;
               "essid"  => $arr[13],
             );
+          if ($hash{'power'}!=0) {
             push @response , \%hash;
+          }
         }
 	    }
-   }  
+   }
   # send response JSON data to the connected client;
 	$data = $json->pretty->encode(\@response);
 	$client_socket->send($data);
