@@ -72,7 +72,7 @@ while(1)
 
     # Filter MACS and creates  a pretty response with necessary information;
   	foreach (@fileArr){
-  	  for my $dev (@macs){
+  	  for my $dev (@drone_macs){
         s/[\0\r\h]//g;
         my @arr = split(",",$_);
         if (/^($dev)/){
