@@ -10,7 +10,7 @@
 #
 #	Usage: ./server.pl [-a <server_address>] [-p <server_port>]
 #
-#	AUTHOR: Andrea Galloni andreagalloni92@gmail.com
+#	AUTHOR: Andrea Galloni andreagalloni91[att][dd0t][gooooooooglemail][d0tt][c0m]
 
 #use strict;
 use warnings;
